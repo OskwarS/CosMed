@@ -42,6 +42,7 @@ npm i -g vercel
 vercel dev
 ```
 Przy pierwszym uruchomieniu Vercel poprosi o zalogowanie (logowanie przez przeglądarkę) i potwierdzenie ustawień projektu. Odpowiadaj Y na setup i Enter na większość pytań.
+### NA PYTANIE **Link to existing project?** ODPOWIEDZIEĆ NO (N)
 
 jd
 
