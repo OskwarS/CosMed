@@ -106,7 +106,7 @@
     background-color: transparent;
     border-color: #d1d5db;
     color: black;
-    padding: 6px 12px; /* Lekko mniejszy */
+    padding: 6px 12px;
     font-size: 0.8rem;
 }
 .dash-btn-outline:hover {
@@ -127,4 +127,58 @@
 }
 .dash-btn-danger:hover {
     background-color: #dc2626;
+}
+
+/* --- SEKCJA EDYCJI (Inline Editing) --- */
+
+/* Kontener dla trybu wyświetlania i edycji */
+.dash-edit-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+
+/* Styl dla pól tekstowych w trybie edycji */
+.dash-input {
+    width: 95%;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+/* Efekt po kliknięciu w pole */
+.dash-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Grupa przycisków akcji (Save/Cancel) */
+.dash-action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* Styl dla przycisku "Cancel" (szary) */
+.dash-btn-cancel {
+    background-color: #e5e7eb;
+    color: #374151;
+    border: none;
+}
+.dash-btn-cancel:hover {
+    background-color: #d1d5db;
+}
+
+.dash-label {
+    display: 'block';
+    margin-bottom: 5px;
+    font-size: 0.9rem;
 }

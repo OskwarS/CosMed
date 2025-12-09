@@ -20,7 +20,7 @@ export default function DoctorDashboard() {
       return;
     }
 
-    fetch('/api/doctors')
+    fetch('/api/doctors/index')
       .then(response => {
         if (!response.ok) throw new Error('Błąd pobierania lekarzy');
         return response.json();
@@ -31,7 +31,7 @@ export default function DoctorDashboard() {
       .catch(error => console.error(error))
       .finally(() => setLoadingDoctors(false));
 
-    fetch('/api/patients')
+    fetch('/api/patients/index')
       .then(response => {
         if (!response.ok) throw new Error('Błąd pobierania pacjentów');
         return response.json();
@@ -51,14 +51,6 @@ export default function DoctorDashboard() {
     navigate('/');
   };
 
-  const boxStyle = {
-    border: '1px solid #ccc',
-    padding: '20px',
-    borderRadius: '8px',
-    background: 'white',
-    flex: 1,
-    minWidth: '300px'
-  };
 
   return (
     <div className="dash-container">      
