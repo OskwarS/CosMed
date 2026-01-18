@@ -4,12 +4,12 @@ export default async function handler(request, response) {
   if (request.method !== 'POST') return response.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const body = JSON.parse(request.body);
+    const body = typeof request.body === 'string' ? JSON.parse(request.body) : request.body;
     console.log("Otrzymane dane z formularza:", body);
 
-    const { 
-      email, password, firstName, lastName, 
-      pesel, address, birthDate, gender, insurance 
+    const {
+      email, password, firstName, lastName,
+      pesel, address, birthDate, gender, insurance
     } = body;
 
     const safeFirstName = firstName || null;
@@ -25,7 +25,7 @@ export default async function handler(request, response) {
     const sql = neon(process.env.DATABASE_URL);
 
     const existing = await sql`SELECT id FROM patients WHERE contact = ${safeEmail}`;
-    
+
     if (existing.length > 0) {
       return response.status(409).json({ error: 'Ten email jest już zajęty!' });
     }
@@ -62,9 +62,9 @@ export default async function handler(request, response) {
   } catch (error) {
     console.error("BŁĄD KRYTYCZNY W BAZIE:", error);
     // Zwracamy dokładny błąd do przeglądarki, żebyś wiedział co poprawić
-    response.status(500).json({ 
-        error: "Błąd zapisu do bazy", 
-        details: error.message 
+    response.status(500).json({
+      error: "Błąd zapisu do bazy",
+      details: error.message
     });
   }
 }

@@ -1,11 +1,12 @@
 import { neon } from '@neondatabase/serverless';
 
 export default async function handler(request, response) {
-    if(request.method !== 'POST') { 
-        return response.status(405).json({ error: 'Metoda niedozwolona'});
+    if (request.method !== 'POST') {
+        return response.status(405).json({ error: 'Metoda niedozwolona' });
     }
 
-    const { username: email, password } = JSON.parse(request.body);
+    const body = typeof request.body === 'string' ? JSON.parse(request.body) : request.body;
+    const { username: email, password } = body;
 
     if (!email || !password) {
         return response.status(400).json({ error: 'Podaj email i hasło' });
@@ -21,9 +22,9 @@ export default async function handler(request, response) {
             if (doc.password === password) {
                 // zalogowano lekarz
                 return response.status(200).json({
-                role: 'doctor',
-                username: doc.email, 
-                id: doc.id
+                    role: 'doctor',
+                    username: doc.email,
+                    id: doc.id
                 });
             } else {
                 return response.status(401).json({ error: 'Błędne hasło' });
@@ -38,9 +39,9 @@ export default async function handler(request, response) {
             if (pat.password === password) {
                 // zalogowano pacjent
                 return response.status(200).json({
-                role: 'patient',
-                username: pat.contact,
-                id: pat.id
+                    role: 'patient',
+                    username: pat.contact,
+                    id: pat.id
                 });
             } else {
                 return response.status(401).json({ error: 'Błędne hasło' });
@@ -54,17 +55,17 @@ export default async function handler(request, response) {
             if (adm.password === password) {
                 // zalogowano admin
                 return response.status(200).json({
-                role: 'admin',
-                username: adm.email,
-                id: adm.id
+                    role: 'admin',
+                    username: adm.email,
+                    id: adm.id
                 });
             } else {
                 return response.status(401).json({ error: 'Błędne hasło' });
             }
         }
 
-    return response.status(404).json({ error: 'Nie znaleziono użytkownika o takim emailu' });
-    } catch(error) {
+        return response.status(404).json({ error: 'Nie znaleziono użytkownika o takim emailu' });
+    } catch (error) {
         console.error(error);
         response.status(500).json({ error: 'Błąd serwera' });
     }

@@ -4,75 +4,78 @@ import './RegisterPage.css';
 
 export default function RegisterPage() {
 
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        gender: '',
-        birthDate: '',
-        email: '',
-        password: '',
-        insurance: '',
-        address: '',
-        pesel: ''
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    gender: '',
+    birthDate: '',
+    email: '',
+    password: '',
+    insurance: '',
+    address: '',
+    pesel: ''
+  });
+
+  const [error, setError] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     });
+  };
 
-    const [error, setError] = useState('');
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError('');
 
-    const navigate = useNavigate();
+    // Prosta walidacja
+    if (!formData.firstName || !formData.lastName || !formData.gender || !formData.birthDate || !formData.email || !formData.password || !formData.insurance || !formData.address || !formData.pesel) {
+      setError("Wypełnij wymagane pola");
+      return;
+    }
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+    try {
+      const payload = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        gender: formData.gender,
+        birthDate: formData.birthDate,
+        email: formData.email,
+        password: formData.password,
+        insurance: formData.insurance,
+        address: formData.address,
+        pesel: formData.pesel,
+      };
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        setError('');
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
 
-        // Prosta walidacja
-        if (!formData.firstName || !formData.lastName || !formData.gender || !formData.birthDate || !formData.email || !formData.password || !formData.insurance || !formData.address || !formData.pesel) {
-            setError("Wypełnij wymagane pola");
-            return;
-        }
+      const data = await res.json();
 
-        try {
-            const payload = {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                gender: formData.gender,
-                birthDate: formData.birthDate,
-                email: formData.email,
-                password: formData.password,
-                insurance: formData.insurance,
-                address: formData.address,
-                pesel: formData.pesel,
-            };
+      if (!res.ok) {
+        throw new Error(data.error || 'Błąd rejestracji');
+      }
 
-            const res = await fetch('/api/register', {
-                method: 'POST', 
-                body: JSON.stringify(payload)
-            });
-            
-            const data = await res.json();
+      alert("Konto założone! Możesz się zalogować.");
+      navigate('/');
 
-            if(!res.ok) {
-                throw new Error(data.error || 'Błąd rejestracji');
-            }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
-            alert("Konto założone! Możesz się zalogować.");
-            navigate('/');
-            
-        } catch (err) {
-            setError(err.message);
-        }
-    };
-
-    return (
+  return (
     <div className="profile-container">
       <div className="profile-card">
-        
+
         <p className="profile-title">Podstawowe Informacje</p>
         <p className="profile-subtitle">Wypełnij formularz, aby utworzyć profil.</p>
 
@@ -81,10 +84,10 @@ export default function RegisterPage() {
           {/* Imię */}
           <div className="form-group">
             <label className="form-label">Imię</label>
-            <input 
+            <input
               name="firstName"
-              type="text" 
-              placeholder="Jan" 
+              type="text"
+              placeholder="Jan"
               className="form-input"
               value={formData.firstName}
               onChange={handleChange}
@@ -94,10 +97,10 @@ export default function RegisterPage() {
           {/* Nazwisko */}
           <div className="form-group">
             <label className="form-label">Nazwisko</label>
-            <input 
+            <input
               name="lastName"
-              type="text" 
-              placeholder="Kowalski" 
+              type="text"
+              placeholder="Kowalski"
               className="form-input"
               value={formData.lastName}
               onChange={handleChange}
@@ -107,7 +110,7 @@ export default function RegisterPage() {
           {/* Płeć (Zamienione na Select) */}
           <div className="form-group">
             <label className="form-label">Płeć</label>
-            <select 
+            <select
               name="gender"
               className="form-select"
               value={formData.gender}
@@ -122,9 +125,9 @@ export default function RegisterPage() {
           {/* Data Urodzenia */}
           <div className="form-group">
             <label className="form-label">Data Urodzenia</label>
-            <input 
+            <input
               name="birthDate"
-              type="date" 
+              type="date"
               className="form-input"
               value={formData.birthDate}
               onChange={handleChange}
@@ -134,10 +137,10 @@ export default function RegisterPage() {
           {/* Email */}
           <div className="form-group">
             <label className="form-label">Email</label>
-            <input 
+            <input
               name="email"
-              type="email" 
-              placeholder="jankowalski@google.com" 
+              type="email"
+              placeholder="jankowalski@google.com"
               className="form-input"
               value={formData.email}
               onChange={handleChange}
@@ -147,23 +150,23 @@ export default function RegisterPage() {
           {/* Hasło */}
           <div className="form-group">
             <label className="form-label">Hasło</label>
-            <input 
+            <input
               name="password"
-              type="password" 
-              placeholder="••••••••" 
+              type="password"
+              placeholder="••••••••"
               className="form-input"
               value={formData.password}
               onChange={handleChange}
             />
           </div>
 
-           {/* Ubezpieczenie */}
-           <div className="form-group">
+          {/* Ubezpieczenie */}
+          <div className="form-group">
             <label className="form-label">Ubezpieczenie</label>
-            <input 
+            <input
               name="insurance"
-              type="text" 
-              placeholder="NFZ Oddział Mazowiecki" 
+              type="text"
+              placeholder="NFZ Oddział Mazowiecki"
               className="form-input"
               value={formData.insurance}
               onChange={handleChange}
@@ -171,12 +174,12 @@ export default function RegisterPage() {
           </div>
 
           {/* Pesel */}
-           <div className="form-group">
+          <div className="form-group">
             <label className="form-label">Pesel</label>
-            <input 
+            <input
               name="pesel"
-              type="text" 
-              placeholder="88121772592" 
+              type="text"
+              placeholder="88121772592"
               className="form-input"
               value={formData.pesel}
               onChange={handleChange}
@@ -184,12 +187,12 @@ export default function RegisterPage() {
           </div>
 
           {/* Adres */}
-           <div className="form-group">
+          <div className="form-group">
             <label className="form-label">Adres</label>
-            <input 
+            <input
               name="address"
-              type="text" 
-              placeholder="ul. Janowska 10, 20-400 Lublin" 
+              type="text"
+              placeholder="ul. Janowska 10, 20-400 Lublin"
               className="form-input"
               value={formData.address}
               onChange={handleChange}
@@ -198,7 +201,7 @@ export default function RegisterPage() {
 
           {/* Przycisk na dole (rozciągnięty) */}
           <div className="full-width">
-             <button type="submit" className="submit-btn">Zarejestruj się</button>
+            <button type="submit" className="submit-btn">Zarejestruj się</button>
           </div>
 
         </form>
@@ -206,13 +209,13 @@ export default function RegisterPage() {
     </div>
     // <div className="login-container">
     //   <div className="login-card">
-        
+
     //     <h2 className="login-title">Załóż konto</h2>
-        
+
     //     {error && <div className="error-msg">{error}</div>}
 
     //     <form onSubmit={handleRegister}>
-          
+
     //       <div className="form-group">
     //         <label className="form-label">Login</label>
     //         <input 
@@ -252,7 +255,7 @@ export default function RegisterPage() {
     //       <button type="submit" className="login-button" style={{ background: '#10b981' }}>
     //         Zarejestruj się
     //       </button>
-        
+
     //     </form>
 
     //     <div className="footer-text">
@@ -262,7 +265,7 @@ export default function RegisterPage() {
     //          Zaloguj się
     //       </Link>
     //     </div>
-      
+
     //   </div>
     // </div>
   );
