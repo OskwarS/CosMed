@@ -14,6 +14,12 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Adding Cron endpoint
+app.get('/api/cron/send-reminders', async (req, res) => {
+    const handler = await importHandler('./api/cron/send-reminders.js');
+    await handler(req, res);
+});
+
 app.use(cors());
 
 // WAŻNE: W Vercel (zależnie od ustawień) body czasem jest stringiem, czasem obiektem.
