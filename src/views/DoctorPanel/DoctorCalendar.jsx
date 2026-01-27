@@ -125,27 +125,6 @@ export default function DoctorCalendar({ doctorId }) {
         alert('Dodano dostępność');
     };
 
-    const handleAddAvailability = async (e) => {
-        e.preventDefault();
-        const dateToSend = new Date(date);
-
-        const dateString = formatDate(dateToSend);
-
-        await fetch('/api/availability', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                doctorId,
-                date: dateString,
-                startTime,
-                endTime,
-                slotDuration
-            })
-        });
-        fetchData();
-        alert('Dodano dostępność');
-    };
-
 
     return (
         <div className="calendar-wrapper">
