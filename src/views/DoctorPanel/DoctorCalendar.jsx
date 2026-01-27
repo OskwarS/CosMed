@@ -131,7 +131,7 @@ export default function DoctorCalendar({ doctorId }) {
     const handleAddAvailability = async (e) => {
         e.preventDefault();
         const dateToSend = new Date(date);
-        dateToSend.setDate(dateToSend.getDate() + 1);
+        dateToSend.setDate(dateToSend.getDate());
 
         const dateString = formatDate(dateToSend);
 
