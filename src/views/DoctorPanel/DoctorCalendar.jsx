@@ -105,6 +105,28 @@ export default function DoctorCalendar({ doctorId }) {
         return date < today;
     };
 
+    const handleSlotClick = (slot) => {
+        if (slot.appointment) {
+            // Check if it is today
+            const appDate = new Date(slot.appointment.date);
+            const today = new Date();
+            const isToday = appDate.getDate() === today.getDate() &&
+                appDate.getMonth() === today.getMonth() &&
+                appDate.getFullYear() === today.getFullYear();
+
+            if (!isToday) {
+                alert("Możesz otworzyć wizytę tylko w dniu jej trwania.");
+                return;
+            }
+
+            // Open Visit Details
+            navigate(`/lekarz/wizyta/${slot.appointment.id}`);
+        } else {
+            // Free slot - maybe nothing for now, or "Reserve manually"?
+            // User request only mentions "po kliknieciu w taka ktora zostala... zarejestrowana"
+        }
+    };
+
     // Handler: Click on a slot
     const handleAddAvailability = async (e) => {
         e.preventDefault();
